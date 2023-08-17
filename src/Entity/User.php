@@ -14,29 +14,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'integer')]
+    private $id;
 
-    #[ORM\Column(length: 180, unique: true)]
-    private ?string $email = null;
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    private $email;
 
-    #[ORM\Column]
-    private array $roles = [];
+    #[ORM\Column(type: 'json')]
+    private $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
-    #[ORM\Column]
-    private ?string $password = null;
+    #[ORM\Column(type: 'string')]
+    private $password;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $username = null;
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    private $username;
 
-    #[ORM\Column(length: 10)]
-    private ?string $locale = null;
+    #[ORM\Column(type: 'string', length: 10)]
+    private $locale;
 
-    #[ORM\Column]
-    private ?bool $is_verified = null;
+    #[ORM\Column(type: 'boolean')]
+    private $is_verified;
 
     public function getId(): ?int
     {
@@ -48,7 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
@@ -77,7 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): static
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
 
@@ -92,7 +89,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(string $password): self
     {
         $this->password = $password;
 
@@ -102,7 +99,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials(): void
+    public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
@@ -113,7 +110,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->username;
     }
 
-    public function setUsername(?string $username): static
+    public function setUsername(?string $username): self
     {
         $this->username = $username;
 
@@ -125,7 +122,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->locale;
     }
 
-    public function setLocale(string $locale): static
+    public function setLocale(string $locale): self
     {
         $this->locale = $locale;
 
@@ -137,7 +134,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->is_verified;
     }
 
-    public function setIsVerified(bool $is_verified): static
+    public function setIsVerified(bool $is_verified): self
     {
         $this->is_verified = $is_verified;
 

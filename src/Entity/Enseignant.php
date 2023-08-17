@@ -12,20 +12,20 @@ class Enseignant
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'integer')]
+    private $id;
 
-    #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    #[ORM\Column(type: 'string', length: 50)]
+    private $nom;
 
-    #[ORM\Column(length: 255)]
-    private ?string $prenom = null;
+    #[ORM\Column(type: 'string', length: 50)]
+    private $prenom;
 
-    #[ORM\Column(length: 255)]
-    private ?string $cin = null;
+    #[ORM\Column(type: 'string', length: 20)]
+    private $cin;
 
     #[ORM\OneToMany(mappedBy: 'enseignant', targetEntity: Module::class)]
-    private Collection $modules;
+    private $modules;
 
     public function __construct()
     {
@@ -42,7 +42,7 @@ class Enseignant
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
+    public function setNom(string $nom): self
     {
         $this->nom = $nom;
 
@@ -54,7 +54,7 @@ class Enseignant
         return $this->prenom;
     }
 
-    public function setPrenom(string $prenom): static
+    public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
 
@@ -66,7 +66,7 @@ class Enseignant
         return $this->cin;
     }
 
-    public function setCin(string $cin): static
+    public function setCin(string $cin): self
     {
         $this->cin = $cin;
 
@@ -81,17 +81,17 @@ class Enseignant
         return $this->modules;
     }
 
-    public function addModule(Module $module): static
+    public function addModule(Module $module): self
     {
         if (!$this->modules->contains($module)) {
-            $this->modules->add($module);
+            $this->modules[] = $module;
             $module->setEnseignant($this);
         }
 
         return $this;
     }
 
-    public function removeModule(Module $module): static
+    public function removeModule(Module $module): self
     {
         if ($this->modules->removeElement($module)) {
             // set the owning side to null (unless already changed)

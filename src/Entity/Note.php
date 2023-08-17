@@ -10,22 +10,22 @@ class Note
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'integer')]
+    private $id;
 
-    #[ORM\Column]
-    private ?float $note = null;
+    #[ORM\Column(type: 'float')]
+    private $note;
 
-    #[ORM\Column(length: 255)]
-    private ?string $observation = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    private $observation;
 
-    #[ORM\ManyToOne(inversedBy: 'notes')]
+    #[ORM\ManyToOne(targetEntity: Etudiant::class, inversedBy: 'notes')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?etudiant $etudiant = null;
+    private $etudiant;
 
-    #[ORM\ManyToOne(inversedBy: 'notes')]
+    #[ORM\ManyToOne(targetEntity: Module::class, inversedBy: 'notes')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?module $module = null;
+    private $module;
 
     public function getId(): ?int
     {
@@ -37,7 +37,7 @@ class Note
         return $this->note;
     }
 
-    public function setNote(float $note): static
+    public function setNote(float $note): self
     {
         $this->note = $note;
 
@@ -49,7 +49,7 @@ class Note
         return $this->observation;
     }
 
-    public function setObservation(string $observation): static
+    public function setObservation(string $observation): self
     {
         $this->observation = $observation;
 
@@ -61,7 +61,7 @@ class Note
         return $this->etudiant;
     }
 
-    public function setEtudiant(?etudiant $etudiant): static
+    public function setEtudiant(?etudiant $etudiant): self
     {
         $this->etudiant = $etudiant;
 
@@ -73,7 +73,7 @@ class Note
         return $this->module;
     }
 
-    public function setModule(?module $module): static
+    public function setModule(?module $module): self
     {
         $this->module = $module;
 

@@ -12,26 +12,26 @@ class Module
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'integer')]
+    private $id;
 
-    #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    private $nom;
 
-    #[ORM\ManyToOne(inversedBy: 'modules')]
+    #[ORM\ManyToOne(targetEntity: Enseignant::class, inversedBy: 'modules')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?enseignant $enseignant = null;
+    private $enseignant;
 
-    #[ORM\ManyToOne(inversedBy: 'modules')]
+    #[ORM\ManyToOne(targetEntity: Filiere::class, inversedBy: 'modules')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?filiere $filiere = null;
+    private $filiere;
 
-    #[ORM\ManyToOne(inversedBy: 'modules')]
+    #[ORM\ManyToOne(targetEntity: Semestre::class, inversedBy: 'modules')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?semestre $semestre = null;
+    private $semestre;
 
     #[ORM\OneToMany(mappedBy: 'module', targetEntity: Note::class)]
-    private Collection $notes;
+    private $notes;
 
     public function __construct()
     {
@@ -48,7 +48,7 @@ class Module
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
+    public function setNom(string $nom): self
     {
         $this->nom = $nom;
 
@@ -60,7 +60,7 @@ class Module
         return $this->enseignant;
     }
 
-    public function setEnseignant(?enseignant $enseignant): static
+    public function setEnseignant(?enseignant $enseignant): self
     {
         $this->enseignant = $enseignant;
 
@@ -72,7 +72,7 @@ class Module
         return $this->filiere;
     }
 
-    public function setFiliere(?filiere $filiere): static
+    public function setFiliere(?filiere $filiere): self
     {
         $this->filiere = $filiere;
 
@@ -84,7 +84,7 @@ class Module
         return $this->semestre;
     }
 
-    public function setSemestre(?semestre $semestre): static
+    public function setSemestre(?semestre $semestre): self
     {
         $this->semestre = $semestre;
 
@@ -99,17 +99,17 @@ class Module
         return $this->notes;
     }
 
-    public function addNote(Note $note): static
+    public function addNote(Note $note): self
     {
         if (!$this->notes->contains($note)) {
-            $this->notes->add($note);
+            $this->notes[] = $note;
             $note->setModule($this);
         }
 
         return $this;
     }
 
-    public function removeNote(Note $note): static
+    public function removeNote(Note $note): self
     {
         if ($this->notes->removeElement($note)) {
             // set the owning side to null (unless already changed)

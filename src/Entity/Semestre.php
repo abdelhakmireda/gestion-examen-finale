@@ -12,14 +12,14 @@ class Semestre
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'integer')]
+    private $id;
 
-    #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    #[ORM\Column(type: 'string', length: 30)]
+    private $nom;
 
     #[ORM\OneToMany(mappedBy: 'semestre', targetEntity: Module::class)]
-    private Collection $modules;
+    private $modules;
 
     public function __construct()
     {
@@ -36,7 +36,7 @@ class Semestre
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
+    public function setNom(string $nom): self
     {
         $this->nom = $nom;
 
@@ -51,17 +51,17 @@ class Semestre
         return $this->modules;
     }
 
-    public function addModule(Module $module): static
+    public function addModule(Module $module): self
     {
         if (!$this->modules->contains($module)) {
-            $this->modules->add($module);
+            $this->modules[] = $module;
             $module->setSemestre($this);
         }
 
         return $this;
     }
 
-    public function removeModule(Module $module): static
+    public function removeModule(Module $module): self
     {
         if ($this->modules->removeElement($module)) {
             // set the owning side to null (unless already changed)

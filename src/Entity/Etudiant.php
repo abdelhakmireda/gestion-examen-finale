@@ -12,26 +12,23 @@ class Etudiant
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'integer')]
+    private $id;
 
-    #[ORM\Column(length: 255)]
-    private ?string $etudiant = null;
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    private $nom;
 
-    #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    #[ORM\Column(type: 'string', length: 50)]
+    private $prenom;
 
-    #[ORM\Column(length: 255)]
-    private ?string $prenom = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    private $adresse;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $adresse = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $cne = null;
+    #[ORM\Column(type: 'string', length: 30)]
+    private $cne;
 
     #[ORM\OneToMany(mappedBy: 'etudiant', targetEntity: Note::class)]
-    private Collection $notes;
+    private $notes;
 
     public function __construct()
     {
@@ -43,24 +40,12 @@ class Etudiant
         return $this->id;
     }
 
-    public function getEtudiant(): ?string
-    {
-        return $this->etudiant;
-    }
-
-    public function setEtudiant(string $etudiant): static
-    {
-        $this->etudiant = $etudiant;
-
-        return $this;
-    }
-
     public function getNom(): ?string
     {
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
+    public function setNom(?string $nom): self
     {
         $this->nom = $nom;
 
@@ -72,7 +57,7 @@ class Etudiant
         return $this->prenom;
     }
 
-    public function setPrenom(string $prenom): static
+    public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
 
@@ -84,7 +69,7 @@ class Etudiant
         return $this->adresse;
     }
 
-    public function setAdresse(?string $adresse): static
+    public function setAdresse(string $adresse): self
     {
         $this->adresse = $adresse;
 
@@ -96,7 +81,7 @@ class Etudiant
         return $this->cne;
     }
 
-    public function setCne(string $cne): static
+    public function setCne(string $cne): self
     {
         $this->cne = $cne;
 
@@ -111,17 +96,17 @@ class Etudiant
         return $this->notes;
     }
 
-    public function addNote(Note $note): static
+    public function addNote(Note $note): self
     {
         if (!$this->notes->contains($note)) {
-            $this->notes->add($note);
+            $this->notes[] = $note;
             $note->setEtudiant($this);
         }
 
         return $this;
     }
 
-    public function removeNote(Note $note): static
+    public function removeNote(Note $note): self
     {
         if ($this->notes->removeElement($note)) {
             // set the owning side to null (unless already changed)
